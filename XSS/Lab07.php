@@ -94,7 +94,26 @@
 	<!-- But But But.... I don't see any php. Well that's just amazing.  -->
 	
 	<script>
-	var hashvalue = location.hash.substring(1);
+    //https://stackoverflow.com/questions/2794137/sanitizing-user-input-before-adding-it-to-the-dom-in-javascript
+    function sanitize(string) {
+      const map = {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#x27;',
+          "/": '&#x2F;',
+          "(": '&#x00028;',
+          ')': '&#x00029;',
+          '{': '&lcub;',
+          '}': '&rcub;'
+      };
+      const reg = /[&<>"'/]/ig;
+      return string.replace(reg, (match)=>(map[match]));
+  }
+
+	var hashvalue = sanitize(location.hash.substring(1));
+
 	document.write(hashvalue);
 	document.write("<br>");
 	document.write(decodeURI(hashvalue));
